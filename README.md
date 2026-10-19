@@ -30,7 +30,11 @@ Run `npx wrangler login` once before the first deploy.
 
 `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` is inlined at build time, so it must be present wherever the build runs: in `.env.local` for local deploys, or as a **build** variable in Workers Builds when deploying from GitHub.
 
-Image optimization uses the Cloudflare Images binding (`IMAGES` in `wrangler.jsonc`).
+## Images
+
+`npm run images` (run automatically by `dev` and `build`) writes resized WebP versions of the covers, spreads and logo to `public/_img`, plus `lib/image-manifest.json`. `next/image` uses `lib/imageLoader.ts` to pick the closest pre-built width, so no image resizing happens inside the Worker. Both outputs are generated and gitignored.
+
+Add new images under `public/COVERS`, `public/TEST SPREADS` or `public/fo-wave/logo.png` and they are picked up on the next run.
 
 ## Notes
 
