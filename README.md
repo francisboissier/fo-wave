@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FO—WAVE
 
-## Getting Started
+Next.js site for FO—WAVE, deployed to Cloudflare Workers with [OpenNext](https://opennext.js.org/cloudflare).
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create `.env.local` with the Web3Forms key used by the contact form:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your-key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy `.dev.vars.example` to `.dev.vars` before running the Workers preview.
 
-## Learn More
+## Cloudflare Workers
 
-To learn more about Next.js, take a look at the following resources:
+| Command | What it does |
+| --- | --- |
+| `npm run preview` | Builds with OpenNext and runs the site locally in the Workers runtime |
+| `npm run deploy` | Builds and deploys to the `fo-wave` Worker |
+| `npm run upload` | Builds and uploads a new version without promoting it |
+| `npm run cf-typegen` | Regenerates `cloudflare-env.d.ts` after changing `wrangler.jsonc` |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run `npx wrangler login` once before the first deploy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` is inlined at build time, so it must be present wherever the build runs: in `.env.local` for local deploys, or as a **build** variable in Workers Builds when deploying from GitHub.
 
-## Deploy on Vercel
+Image optimization uses the Cloudflare Images binding (`IMAGES` in `wrangler.jsonc`).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `cacheComponents` is disabled: Next.js Cache Components currently hangs requests in the Workers runtime. Every page is statically prerendered, so nothing depends on it.
+- If styles look stale in development, stop the dev server, run `rm -rf .next/dev`, and start it again.
