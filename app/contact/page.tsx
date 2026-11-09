@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { ContactForm } from "@/components/ContactForm";
+import { Masthead } from "@/components/Masthead";
 
 export const metadata: Metadata = {
   title: "Contact — FO—WAVE",
@@ -9,13 +8,12 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="contact-page">
-      <Link href="/" className="contact-logo" aria-label="FO—WAVE home">
-        <Image src="/fo-wave/logo.png" alt="FO—WAVE" width={1134} height={194} loading="eager" />
-      </Link>
-      <div className="contact-wrapper">
+    <div className="site">
+      <Masthead />
+      <main className="site-main">
+        <h1 className="sr-only">Contact FO—WAVE</h1>
         <ContactForm />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }

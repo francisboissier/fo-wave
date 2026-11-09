@@ -6,7 +6,7 @@ const root = process.cwd();
 const publicDir = path.join(root, "public");
 const outputDir = path.join(publicDir, "_img");
 const manifestPath = path.join(root, "lib", "image-manifest.json");
-const sourceDirs = ["COVERS", "TEST SPREADS", "fo-wave/logo.png"];
+const sourceDirs = ["COVERS", "fo-wave/logo.png"];
 const targetWidths = [320, 480, 640, 960, 1280, 1600];
 const imagePattern = /\.(jpe?g|png)$/i;
 

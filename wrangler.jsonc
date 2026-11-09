@@ -1,20 +1,10 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "fo-wave",
-  "main": ".open-next/worker.js",
   "compatibility_date": "2026-09-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": {
-    "directory": ".open-next/assets",
-    "binding": "ASSETS"
-  },
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "fo-wave"
-    }
-  ],
-  "observability": {
-    "enabled": true
+    "directory": "./out",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
   }
 }

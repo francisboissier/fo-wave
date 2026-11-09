@@ -5,16 +5,12 @@
   "scripts": {
     "dev": "npm run images && next dev",
     "build": "npm run images && next build",
-    "start": "next start",
     "lint": "eslint",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
-    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
-    "images": "node scripts/build-images.mjs"
+    "images": "node scripts/build-images.mjs",
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
-    "@opennextjs/cloudflare": "1.20.12",
     "next": "16.4.2",
     "pixi.js": "4.7.0",
     "react": "19.3.0",

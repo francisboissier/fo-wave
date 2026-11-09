@@ -246,7 +246,7 @@ const loadTexture = (PIXI: Pixi, src: string) =>
     texture.baseTexture.once("error", reject);
   });
 
-export function mountHalftone(host: HTMLElement, images: HalftoneImages) {
+export function mountHalftone(host: HTMLElement, images: HalftoneImages, onReady?: () => void) {
   let destroyed = false;
   let cleanup = () => {};
 
@@ -254,11 +254,12 @@ export function mountHalftone(host: HTMLElement, images: HalftoneImages) {
     if (destroyed) return;
     const PIXI: Pixi = module.default ?? module;
     PIXI.utils.skipHello();
-    cleanup = await startHalftone(PIXI, host, images, () => destroyed);
+    cleanup = await startHalftone(PIXI, host, images, () => destroyed, onReady);
     if (destroyed) cleanup();
   });
 
   return () => {
+    if (destroyed) return;
     destroyed = true;
     cleanup();
   };
@@ -269,6 +270,7 @@ async function startHalftone(
   host: HTMLElement,
   images: HalftoneImages,
   isDestroyed: () => boolean,
+  onReady?: () => void,
 ) {
   const data = {
     counter: 0,
@@ -526,7 +528,10 @@ async function startHalftone(
 
       updateShaderAnimation();
       renderer.render(stageWrapper);
-      host.dataset.loaded = "true";
+      if (host.dataset.loaded !== "true") {
+        host.dataset.loaded = "true";
+        onReady?.();
+      }
     });
   };
 

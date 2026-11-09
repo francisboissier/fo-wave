@@ -1,18 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Source_Serif_4 } from "next/font/google";
 import { DigitalClock } from "@/components/DigitalClock";
+import { introStorageKey } from "@/lib/intro";
 import "./globals.css";
 
-const romVariable = localFont({
-  src: "./fonts/rom-variable.woff2",
-  weight: "300 900",
-  style: "normal",
-  variable: "--font-rom",
+const serif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
 });
+
+const skipSeenIntro = `try{if(sessionStorage.getItem("${introStorageKey}"))document.documentElement.dataset.intro="done"}catch(e){}`;
 
 export const metadata: Metadata = {
   title: "FO—WAVE",
-  description: "FO—WAVE",
+  description: "FO—WAVE Issue One",
   openGraph: {
     title: "FO—WAVE",
     url: "https://fo-wave.online",
@@ -32,15 +34,14 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={romVariable.variable}>
+    <html lang="en" className={serif.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: skipSeenIntro }} />
+      </head>
       <body>
         {children}
-        <footer className="page pinned-bottom">
-          <div className="page-layout">
-            <div className="bodycopy">
-              <DigitalClock />
-            </div>
-          </div>
+        <footer className="site-footer">
+          <DigitalClock />
         </footer>
       </body>
     </html>
